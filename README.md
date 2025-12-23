@@ -18,9 +18,34 @@
 npm init -y
 ```
 
+#### 학습 로드맵 (node-basic/)
+
+단계별 폴더 구조로 기초부터 실전까지 학습:
+
+1. **01-basics/** - Node.js 기본 문법과 모듈 시스템
+2. **02-async/** - 비동기 처리 (callback → promise → async/await)
+3. **03-fs/** - 파일 시스템 다루기
+4. **04-path-process/** - Path, Process, 환경변수
+5. **05-http/** - HTTP 서버 만들기 (프레임워크 없이)
+6. **06-events/** - EventEmitter와 이벤트 기반 프로그래밍
+7. **07-streams/** - Stream 처리 (파일, 네트워크)
+8. **08-error-handling/** - 에러 처리 패턴
+9. **09-npm-packages/** - 외부 패키지 활용
+10. **10-mini-projects/** - 실전 미니 프로젝트
+
+각 폴더 안에는 `01-주제.js`, `02-주제.js` 형식으로 실행 가능한 예제 파일이 있습니다.
+
+```bash
+cd node-basic/01-basics
+node 01-hello-world.js
+```
+
 ---
 
 ### 2. Node + TS
+
+Node + TS 는 새로운 런타임이 아니라,
+Node.js 위에서 TypeScript를 사용하기 위한 개발 방식이다.
 
 #### 'Node + TS' 는 언제 쓰이나
 
@@ -45,6 +70,9 @@ npx ts-node src/index.ts
 ---
 
 ### 3. NestJS
+
+NestJS는 Node.js + TypeScript 기반의 서버 프레임워크로,
+Controller / Service / Module 구조와 DI를 제공한다.
 
 #### NestJS는 언제 쓰이나
 
