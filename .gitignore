@@ -32,6 +32,7 @@ coverage
 .env*
 
 # project files
+memo*.md
 .gemini
 .claude/*
 /src/views/exam/html/*
