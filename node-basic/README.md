@@ -7,9 +7,8 @@
 실행가능한 예제 파일을 확인해 볼 수 있습니다.
 
 ```bash
-cd 01-basics
-node 01-hello-world.js
-node 02-require-module.js
+cd 01-topic
+node 01-subTopic.js
 # ...
 ```
 
