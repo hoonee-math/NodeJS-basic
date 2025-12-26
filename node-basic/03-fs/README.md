@@ -11,24 +11,22 @@ Node.js에서 파일과 디렉토리를 다루는 방법을 학습합니다.
 - 파일 메타데이터 다루기
 - 실전 파일 관리 패턴
 
-## 예제 파일 순서
+## 목차
 
-1. 01-read-file-sync.js - 동기 파일 읽기
-2. 02-read-file-async.js - 비동기 파일 읽기
-3. 03-write-file.js - 파일 쓰기
-4. 04-file-operations.js - 파일 복사/이동/삭제
-5. 05-directory-operations.js - 디렉토리 다루기
-6. 06-file-stats.js - 파일 정보 조회
-7. 07-fs-promises.js - fs.promises API
+- [핵심 개념 및 사용 메서드](#핵심-개념-및-사용-메서드)
+    1. [01-read-file-sync.js](#01-read-file-syncjs) - 동기 파일 읽기
+    2. [02-read-file-async.js](#02-read-file-asyncjs) - 비동기 파일 읽기
+    3. [03-write-file.js](#03-write-filejs) - 파일 쓰기
+    4. [04-file-operations.js](#04-file-operationsjs) - 파일 복사/이동/삭제
+    5. [05-directory-operations.js](#05-directory-operationsjs) - 디렉토리 다루기
+    6. [06-file-stats.js](#06-file-statsjs) - 파일 정보 조회
+    7. [07-fs-promises.js](#07-fs-promisesjs) - fs.promises API
+- [fs 모듈 메서드 비교](#fs-모듈-메서드-비교)
+- [실전 패턴](#실전-패턴)
+- [주의 사항](#주의사항)
+- [핵심 정리](#핵심-정리)
+- [참고 자료](#참고-자료)
 
-## 실행 방법
-
-```bash
-cd node-basic/03-fs
-node 01-read-file-sync.js
-node 02-read-file-async.js
-# ...
-```
 
 ## 핵심 개념 및 사용 메서드
 

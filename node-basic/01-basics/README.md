@@ -9,14 +9,16 @@ Node.js의 가장 기본적인 개념들을 학습합니다.
 - 내장 모듈 사용법 배우기
 - package.json의 역할 이해
 
-## 예제 파일 순서
+## 목차
 
-1. **01-hello-world.js** - Node.js 첫 실행
-2. **02-global-objects.js** - 전역 객체 (global, process 등)
-3. **03-require-module.js** - 모듈 불러오기 (require)
-4. **04-exports-module.js** - 모듈 내보내기 (module.exports, exports)
-5. **05-builtin-modules.js** - 내장 모듈 사용
-6. **06-dirname-filename.js** - __dirname, __filename 이해
+- [핵심 개념 및 사용 메서드](#핵심-개념-및-사용-메서드)
+    1. **[01-hello-world.js](#01-hello-worldjs)** - Node.js 첫 실행
+    2. **[02-global-objects.js](#02-global-objectsjs)** - 전역 객체 (global, process 등)
+    3. **[03-require-module.js](#03-require-modulejs)** - 모듈 불러오기 (require)
+    4. **[04-exports-module.js](#04-exports-modulejs)** - 모듈 내보내기 (module.exports, exports)
+    5. **[05-builtin-modules.js](#05-builtin-modulesjs)** - 내장 모듈 사용
+    6. **[06-dirname-filename.js](#06-dirname-filenamejs)** - __dirname, __filename 이해
+- [CommonJS 모듈 시스템 정리](#commonjs-모듈-시스템-정리md)
 
 ## 핵심 개념 및 사용 메서드
 
@@ -214,9 +216,9 @@ const publicPath = path.join(__dirname, 'public');
 
 ---
 
-## [CommonJS 모듈 시스템 정리](CommonJS-vs-ESM.md)
+## [CommonJS 모듈 시스템 정리.md](CommonJS-vs-ESM.md)
 
-01-basics에서 배운 가장 핵심적인 개념인 **모듈 시스템**을 요약 정리합니다.
+01-basics에서 배운 가장 핵심적인 개념인 **모듈 시스템**을 요약 정리합니다.\
 위 예제에서 `os`, `path`, `url` 등을 사용했지만, Node.js에는 이 외에도 수십 가지 내장 모듈이 있으며, npm을 통해 설치 가능한 외부 모듈은 수백만 개에 달합니다. 모듈 시스템은 이 모든 것을 일관된 방식으로 사용할 수 있게 해줍니다.
 
 ### 모듈 불러오기
