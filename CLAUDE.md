@@ -19,28 +19,53 @@ Step-by-step Node.js learning path from basics to practical applications.
 
 **Learning Structure:**
 The project is organized into numbered directories (01-, 02-, etc.) representing progressive learning stages:
-- `01-basics/` - Node.js fundamentals and module system
-- `02-async/` - Asynchronous patterns (callbacks, promises, async/await)
-- `03-fs/` - File system operations
-- `04-path-process/` - Path utilities and process management
-- `05-http/` - Building HTTP servers without frameworks
-- `06-events/` - EventEmitter and event-driven patterns
-- `07-streams/` - Stream processing
-- `08-error-handling/` - Error handling strategies
-- `09-npm-packages/` - Working with external packages
-- `10-mini-projects/` - Practical mini-projects
+- `01-basics/` - Node.js fundamentals (global, process, require/exports, __dirname/__filename, built-in modules)
+- `02-async/` - Asynchronous patterns (callbacks, promises, async/await, Promise.all/race)
+- `03-fs/` - File system operations (read/write, directories, stats, fs.promises)
+- `04-path-process/` - Path utilities and process management (path module, argv, env, stdin, events)
+- `05-http/` - Building HTTP servers without frameworks (planned)
+- `06-events/` - EventEmitter and event-driven patterns (planned)
+- `07-streams/` - Stream processing (planned)
+- `08-error-handling/` - Error handling strategies (planned)
+- `09-npm-packages/` - Working with external packages (planned)
+- `10-mini-projects/` - Practical mini-projects (planned)
+
+**Current Status:** Folders 01-04 completed with full examples and documentation.
 
 **File Naming Convention:**
 Each directory contains:
-- `README.md` - Concept explanation and learning objectives
-- `01-topic-name.js`, `02-topic-name.js` - Executable examples numbered by subtopic
+- `README.md` - Detailed documentation with clickable table of contents, method explanations, and code examples
+- `01-topic-name.js`, `02-topic-name.js`, etc. - Executable examples numbered by subtopic
+
+**README.md Structure:**
+Each folder's README follows a consistent format:
+- **학습 목표 (Learning Objectives)** - What you will learn in this section
+- **목차 (Table of Contents)** - Clickable anchor links to jump to specific example files
+- **예제 파일 상세 (Example File Details)** - Each file section includes:
+  - Brief description of what the file teaches
+  - Key methods/concepts covered
+  - Practical use cases
+- **실습 가이드 (Practice Guide)** - Commands to run examples
+- **핵심 정리 (Key Summary)** - Quick reference with code snippets
+- **참고 자료 (References)** - Links to official documentation and related resources
 
 ```bash
+# Navigate to a folder
 cd node-basic/01-basics
+
+# Run examples in order
 node 01-hello-world.js
-node 02-require-module.js
+node 02-global-objects.js
 # ...and so on
+
+# Each example is self-contained and runnable
 ```
+
+**Learning Progression:**
+1. **01-basics** → Learn CommonJS modules, global objects, built-in modules
+2. **02-async** → Master callback → Promise → async/await progression
+3. **03-fs** → Handle files synchronously, async callbacks, and promises API
+4. **04-path-process** → Work with paths (cross-platform), process info, CLI arguments, environment variables, stdin, and process events
 
 ### ts-basic/
 TypeScript-enabled Node.js project.
