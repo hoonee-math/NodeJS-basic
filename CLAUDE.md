@@ -30,7 +30,7 @@ The project is organized into numbered directories (01-, 02-, etc.) representing
 - `09-npm-packages/` - Working with external packages (planned)
 - `10-mini-projects/` - Practical mini-projects (planned)
 
-**Current Status:** Folders 01-04 completed with full examples and documentation.
+**Current Status:** Folders 01-05 completed with full examples and documentation.
 
 **File Naming Convention:**
 Each directory contains:
@@ -66,6 +66,25 @@ node 02-global-objects.js
 2. **02-async** → Master callback → Promise → async/await progression
 3. **03-fs** → Handle files synchronously, async callbacks, and promises API
 4. **04-path-process** → Work with paths (cross-platform), process info, CLI arguments, environment variables, stdin, and process events
+5. **05-http** → Build HTTP servers, routing, methods, headers, JSON API, static file serving
+
+**Example File Writing Style:**
+
+When creating new example files, aim for **concise, code-focused examples**:
+
+- **Keep it short**: Prefer 100-200 lines per file (avoid excessive verbosity like 03-fs/04-path-process became)
+- **Code over explanations**: Use inline comments and bottom-of-file summaries instead of long `console.log()` explanations
+- **Log user actions**: Always add simple logs when user actions/events occur (e.g., HTTP requests, file operations, event triggers)
+  ```javascript
+  // Example: HTTP server
+  console.log(`→ ${req.method} ${req.url}`);
+
+  // Example: File operations
+  console.log(`→ Reading ${filename}...`);
+  ```
+- **Stay flexible**: Use `console.log()` explanations, `'='.repeat()` separators, or other formatting when it genuinely helps clarity—just avoid overdoing it
+
+Reference **01-basics** for good balance between explanation and code.
 
 ### ts-basic/
 TypeScript-enabled Node.js project.

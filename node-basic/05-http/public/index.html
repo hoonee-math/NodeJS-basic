@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>정적 파일 서버 예제</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>정적 파일 서버 동작 중!</h1>
+    <p>이 HTML 파일은 Node.js HTTP 서버에서 제공됩니다.</p>
+
+    <h2>테스트:</h2>
+    <ul>
+      <li>✅ HTML 파일 로드됨</li>
+      <li>✅ CSS 파일 로드됨 (스타일 확인)</li>
+      <li id="js-test">⏳ JavaScript 로드 중...</li>
+    </ul>
+
+    <button onclick="handleClick()">클릭 테스트</button>
+
+    <h2>작동 원리:</h2>
+    <ol>
+      <li>브라우저가 <code>GET /</code> 요청</li>
+      <li>서버가 <code>/index.html</code>로 변환</li>
+      <li>HTML 파싱 중 <code>/style.css</code> 발견</li>
+      <li>브라우저가 <code>GET /style.css</code> 요청</li>
+      <li>서버가 각 파일의 MIME 타입 설정 후 전송</li>
+    </ol>
+  </div>
+
+  <script src="/script.js"></script>
+</body>
+</html>
