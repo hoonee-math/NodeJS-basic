@@ -197,7 +197,10 @@ class Product {
   constructor(name: string, price: number, description?: string) {
     this.name = name;
     this.price = price;
-    this.description = description;
+    if (description !== undefined) {    // ✅ 올바른 방법 (프로퍼티 자체가 없음) tsconfig.json의 exactOptionalPropertyTypes 옵션이 true인 경우, description?: string과 description: string | undefined는 다르게 취급하여 엄격하게 구분합니다.
+      this.description = description;   
+    }
+    // this.description = description;  // ❌ 잘못된 방법 (undefined를 할당: { description: undefined } )
   }
 
   getInfo(): string {
