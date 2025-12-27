@@ -4,531 +4,265 @@ TypeScript에서 함수는 일급 객체입니다. 함수의 매개변수와 반
 
 ## 학습 목표
 
-- 함수 타입 시그니처 작성
-- 선택적/기본/나머지 매개변수 활용
+- 함수 타입 시그니처 작성 및 표기법 이해
+- 다양한 매개변수 패턴 활용 (선택적, 기본값, 나머지)
 - 함수 오버로드로 다형성 구현
-- 함수 타입 별칭으로 재사용성 향상
-- 화살표 함수와 this 바인딩
-- 콜백 함수 타입 정의
+- this 바인딩과 화살표 함수의 차이 이해
 - 제네릭 함수로 범용성 확보
-- async/await 타입 처리
-- 실전 함수 패턴
+- async/await의 타입 처리
+- 실전 함수 패턴 습득
 
 ## 목차
 
 1. [01-function-basics.ts](#01-function-basicsts) - 기본 함수 타입
-2. [02-optional-default-rest.ts](#02-optional-default-restts) - 선택적/기본/나머지 매개변수
+2. [02-optional-default-rest.ts](#02-optional-default-restts) - 매개변수 패턴
 3. [03-function-overloads.ts](#03-function-overloadsts) - 함수 오버로드
 4. [04-function-types.ts](#04-function-typests) - 함수 타입 별칭
 5. [05-arrow-functions.ts](#05-arrow-functionsts) - 화살표 함수와 this
-6. [06-callback-functions.ts](#06-callback-functionsts) - 콜백 함수 타입
+6. [06-callback-functions.ts](#06-callback-functionsts) - 콜백 함수
 7. [07-generic-functions.ts](#07-generic-functionsts) - 제네릭 함수
-8. [08-async-functions.ts](#08-async-functionsts) - async/await 타입
+8. [08-async-functions.ts](#08-async-functionsts) - async/await
 9. [09-practical-examples.ts](#09-practical-examplests) - 실전 예제
 
-## 예제 파일 상세
+## 예제 파일 개요
 
 ### 01-function-basics.ts
+**함수의 기본 타입 지정 방법**
 
-함수의 기본 타입 지정 방법을 학습합니다.
-
-**주요 내용:**
-```typescript
-// 기본 함수 타입
-function add(a: number, b: number): number {
-  return a + b;
-}
-
-// 함수 표현식
-const multiply = function(a: number, b: number): number {
-  return a * b;
-};
-
-// 화살표 함수
-const subtract = (a: number, b: number): number => a - b;
-
-// void 반환
-function log(message: string): void {
-  console.log(message);
-}
-
-// never 반환
-function throwError(message: string): never {
-  throw new Error(message);
-}
-```
-
-**학습 포인트:**
-- 매개변수 타입 (필수)
-- 반환 타입 (권장)
-- 함수 선언문 vs 표현식 vs 화살표 함수
-- void vs never 구분
+- **함수 선언문, 표현식, 화살표 함수**: 세 가지 함수 정의 방식(`function`, `const f = function`, `const f = () =>`)에 각각 타입을 지정하는 방법과 차이점
+- **매개변수 타입 어노테이션**: 함수 매개변수에 타입을 명시하는 방법 (TypeScript에서 필수)
+- **반환 타입 명시**: 함수가 반환하는 값의 타입 지정, `void` (반환값 없음), `never` (절대 반환하지 않음) 등 특수 타입 포함
+- **익명 함수와 타입 추론**: 콜백이나 즉시 실행 함수에서 문맥적 타입 추론이 동작하는 방식
 
 ### 02-optional-default-rest.ts
+**다양한 매개변수 패턴**
 
-다양한 매개변수 패턴을 학습합니다.
-
-**선택적 매개변수:**
-```typescript
-// ? 연산자로 선택적 매개변수
-function buildName(firstName: string, lastName?: string): string {
-  return lastName ? `${firstName} ${lastName}` : firstName;
-}
-
-buildName('John');           // OK
-buildName('John', 'Doe');    // OK
-```
-
-**기본 매개변수:**
-```typescript
-// 기본값이 있으면 타입 추론됨
-function greet(name: string, greeting = 'Hello'): string {
-  return `${greeting}, ${name}`;
-}
-
-greet('Alice');              // 'Hello, Alice'
-greet('Bob', 'Hi');          // 'Hi, Bob'
-```
-
-**나머지 매개변수:**
-```typescript
-// ... 연산자로 가변 인자
-function sum(...numbers: number[]): number {
-  return numbers.reduce((total, n) => total + n, 0);
-}
-
-sum(1, 2, 3, 4, 5);         // 15
-```
-
-**학습 포인트:**
-- 선택적 매개변수는 필수 매개변수 뒤에
-- 기본 매개변수는 타입 추론됨
-- 나머지 매개변수는 배열 타입
+- **선택적 매개변수 (`?`)**: 생략 가능한 매개변수를 `?` 연산자로 정의, 필수 매개변수 뒤에 위치해야 함
+- **기본 매개변수**: 기본값이 있는 매개변수는 타입이 자동 추론됨, ES6 기본 매개변수와 동일한 문법
+- **나머지 매개변수 (`...`)**: 가변 인자를 배열로 수집, `...args: type[]` 형태로 타입 지정
+- **매개변수 순서 규칙**: 필수 → 선택적 → 기본값 → 나머지 순서로 배치해야 하는 이유와 예외 케이스
 
 ### 03-function-overloads.ts
+**함수 오버로드로 다형성 구현**
 
-함수 오버로드로 다형성을 구현합니다.
-
-**핵심 개념:**
-```typescript
-// 오버로드 시그니처
-function parse(value: string): string[];
-function parse(value: number): number[];
-
-// 구현 시그니처
-function parse(value: string | number): string[] | number[] {
-  if (typeof value === 'string') {
-    return value.split('');
-  } else {
-    return String(value).split('').map(Number);
-  }
-}
-
-parse('hello');   // string[]
-parse(12345);     // number[]
-```
-
-**학습 포인트:**
-- 오버로드 시그니처 vs 구현 시그니처
-- 구현 시그니처는 외부에 노출 안 됨
-- 가장 구체적인 시그니처를 위에 작성
-- 언제 오버로드를 쓸까?
+- **오버로드 시그니처 작성**: 여러 호출 시그니처를 정의하여 입력에 따라 다른 반환 타입을 제공
+- **구현 시그니처**: 실제 함수 로직을 담은 시그니처, 외부에 노출되지 않으며 모든 오버로드를 포함해야 함
+- **오버로드 순서 규칙**: 가장 구체적인 시그니처를 위에, 넓은 시그니처를 아래에 배치해야 하는 이유
+- **오버로드 vs 유니온 타입**: 언제 오버로드를 사용하고, 언제 간단한 유니온 타입으로 충분한지 판단 기준
 
 ### 04-function-types.ts
+**함수 타입 별칭과 고차 함수**
 
-함수 타입을 별칭으로 정의하여 재사용합니다.
-
-**핵심 개념:**
-```typescript
-// 함수 타입 별칭
-type MathOperation = (a: number, b: number) => number;
-type Predicate<T> = (value: T) => boolean;
-type Callback = () => void;
-
-const add: MathOperation = (a, b) => a + b;
-const isEven: Predicate<number> = (n) => n % 2 === 0;
-
-// 함수를 받는 함수
-function calculate(op: MathOperation, a: number, b: number): number {
-  return op(a, b);
-}
-```
-
-**학습 포인트:**
-- 함수 타입 별칭으로 재사용성 향상
-- 고차 함수 (함수를 받거나 반환하는 함수)
-- 함수 타입 시그니처 표기법
+- **함수 타입 별칭**: `type MathOp = (a: number, b: number) => number` 형태로 재사용 가능한 함수 타입 정의
+- **고차 함수 (Higher-Order Functions)**: 함수를 매개변수로 받거나 함수를 반환하는 함수의 타입 지정
+- **함수 타입 재사용**: 타입 별칭으로 콜백, 이벤트 핸들러 등 반복되는 함수 시그니처를 재사용
 
 ### 05-arrow-functions.ts
+**화살표 함수와 this 바인딩**
 
-화살표 함수와 this 바인딩을 학습합니다.
-
-**핵심 개념:**
-```typescript
-// this 타입 명시
-interface User {
-  name: string;
-  greet(this: User): void;
-}
-
-const user: User = {
-  name: 'John',
-  greet() {
-    console.log(`Hello, ${this.name}`);
-  }
-};
-
-// 화살표 함수는 this를 캡처
-class Counter {
-  count = 0;
-
-  // 일반 메서드 - this 동적 바인딩
-  increment() {
-    this.count++;
-  }
-
-  // 화살표 함수 - this 렉시컬 바인딩
-  incrementArrow = () => {
-    this.count++;
-  }
-}
-```
-
-**학습 포인트:**
-- 일반 함수 vs 화살표 함수의 this
-- this 타입 명시
-- 클래스 메서드에서 this 활용
+- **일반 함수 vs 화살표 함수**: 두 함수의 `this` 바인딩 메커니즘 차이 (동적 vs 렉시컬)
+- **this 바인딩 차이**: 일반 함수는 호출 시점에 `this` 결정, 화살표 함수는 선언 위치의 `this` 캡처
+- **this 타입 명시**: `function f(this: Type)` 문법으로 함수 내부에서 사용할 `this`의 타입을 보장
+- **클래스 메서드에서 this**: 클래스 메서드를 일반 함수로 정의할지, 화살표 함수 필드로 정의할지 선택 기준
 
 ### 06-callback-functions.ts
+**콜백 함수의 타입 정의**
 
-콜백 함수의 타입을 정의합니다.
-
-**핵심 개념:**
-```typescript
-// 콜백 타입 정의
-type Callback<T> = (value: T) => void;
-type ErrorCallback = (error: Error | null, result?: any) => void;
-
-function fetchData(url: string, callback: ErrorCallback): void {
-  // 비동기 작업
-  setTimeout(() => {
-    callback(null, { data: 'result' });
-  }, 1000);
-}
-
-// 배열 메서드 타입
-function map<T, U>(
-  array: T[],
-  callback: (item: T, index: number, array: T[]) => U
-): U[] {
-  return array.map(callback);
-}
-```
-
-**학습 포인트:**
-- 콜백 함수 타입 패턴
-- 에러 우선 콜백 (Node.js 스타일)
-- 배열 메서드 콜백 타입
-- 이벤트 핸들러 타입
+- **콜백 함수 타입 정의**: 비동기 작업, 배열 메서드 등에서 사용되는 콜백 함수의 타입 시그니처 작성
+- **에러 우선 콜백 (Error-First Callback)**: Node.js 스타일의 `(err, result) => void` 패턴 타입 지정
+- **배열 메서드 콜백**: `map`, `filter`, `reduce` 등 배열 메서드의 콜백 타입 (매개변수: item, index, array)
+- **이벤트 핸들러**: DOM 이벤트 핸들러, 커스텀 이벤트 리스너의 타입 정의
 
 ### 07-generic-functions.ts
+**제네릭으로 범용 함수 작성**
 
-제네릭으로 범용적인 함수를 작성합니다.
-
-**핵심 개념:**
-```typescript
-// 제네릭 함수
-function identity<T>(value: T): T {
-  return value;
-}
-
-identity<string>('hello');   // string
-identity<number>(42);        // number
-identity('auto');            // 타입 추론
-
-// 제약 조건이 있는 제네릭
-function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
-  return obj[key];
-}
-
-const user = { name: 'John', age: 30 };
-getProperty(user, 'name');   // string
-getProperty(user, 'age');    // number
-```
-
-**학습 포인트:**
-- 제네릭 타입 매개변수
-- 타입 추론
-- 제약 조건 (extends)
-- 여러 제네릭 타입 매개변수
-- 실전 활용 (배열, 객체 유틸리티)
+- **제네릭 타입 매개변수**: `<T>` 문법으로 타입을 변수처럼 사용하여 범용적인 함수 작성
+- **타입 추론**: 제네릭 함수 호출 시 타입 매개변수를 명시하거나, TypeScript가 자동으로 추론하도록 할 수 있음
+- **제약 조건 (extends)**: `<T extends Type>` 문법으로 제네릭 타입의 범위를 제한하여 특정 프로퍼티/메서드 사용 보장
+- **여러 제네릭 매개변수**: `<T, U>`, `<T, K extends keyof T>` 등 여러 타입 매개변수를 사용하는 복잡한 제네릭 함수
 
 ### 08-async-functions.ts
+**비동기 함수의 타입 처리**
 
-async/await의 타입 처리를 학습합니다.
-
-**핵심 개념:**
-```typescript
-// async 함수는 항상 Promise 반환
-async function fetchUser(id: number): Promise<User> {
-  const response = await fetch(`/api/users/${id}`);
-  return response.json();
-}
-
-// 에러 처리
-async function safelyFetchUser(id: number): Promise<User | null> {
-  try {
-    return await fetchUser(id);
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-}
-
-// Promise 타입 유틸리티
-type Awaited<T> = T extends Promise<infer U> ? U : T;
-```
-
-**학습 포인트:**
-- async 함수 반환 타입은 Promise
-- await로 Promise 언래핑
-- try/catch 에러 처리
-- Promise 타입 유틸리티
+- **async 함수 반환 타입**: `async` 함수는 항상 `Promise<T>`를 반환, 직접 `T`를 반환해도 자동으로 래핑됨
+- **await 타입 처리**: `await` 키워드로 Promise를 언래핑, 반환값이 `Promise<T>`에서 `T`로 좁혀지는 과정
+- **에러 처리 패턴**: try/catch에서 `unknown` 타입인 error를 안전하게 처리하는 방법, 타입 가드 활용
+- **Promise 타입 유틸리티**: `Awaited<T>`, `Promise.all`, `Promise.race` 등의 타입 처리
 
 ### 09-practical-examples.ts
+**실전에서 자주 사용하는 함수 패턴**
 
-실전에서 자주 사용하는 함수 패턴입니다.
+- **API 클라이언트**: 타입 안전한 HTTP 요청 함수, 제네릭과 오버로드를 활용한 REST API 클라이언트 구현
+- **디바운스/쓰로틀**: 함수 실행을 지연/제한하는 유틸리티, 제네릭과 `Parameters<T>`, `ReturnType<T>` 활용
+- **파이프/컴포즈**: 여러 함수를 조합하는 함수형 프로그래밍 패턴, 타입 안전성을 유지하는 방법
+- **메모이제이션**: 함수 결과를 캐싱하는 최적화 기법, 제네릭으로 모든 함수에 적용 가능하도록 구현
 
-**예제 1: API 클라이언트**
+## 핵심 개념
+
+### 1. 함수 타입 표기법
+
+| 표기법 | 설명 | 사용 위치 |
+|--------|------|-----------|
+| `(a: type) => type` | 화살표 표기법 | 타입 별칭, 인라인 타입 |
+| `function(a: type): type` | 함수 선언 표기법 | 함수 선언문 |
+| `{ (a: type): type }` | 객체 메서드 표기법 | 인터페이스, 타입 |
+
+### 2. 매개변수 종류
+
+| 종류 | 문법 | 특징 | 예시 |
+|------|------|------|------|
+| **필수 매개변수** | `param: type` | 반드시 전달 필요 | `function f(a: number)` |
+| **선택적 매개변수** | `param?: type` | 생략 가능, 필수 매개변수 뒤에 | `function f(a: number, b?: string)` |
+| **기본 매개변수** | `param = value` | 기본값 제공, 타입 추론됨 | `function f(a = 10)` |
+| **나머지 매개변수** | `...params: type[]` | 가변 인자, 배열로 수집 | `function f(...nums: number[])` |
+
+### 3. 반환 타입
+
+| 타입 | 의미 | 사용 시기 |
+|------|------|-----------|
+| `void` | 반환값 없음 | 로그 출력, 상태 변경 등 |
+| `never` | 절대 반환하지 않음 | 항상 예외 발생, 무한 루프 |
+| `Promise<T>` | 비동기 반환 | async 함수 |
+| 구체적 타입 | 특정 타입 반환 | 대부분의 함수 |
+
+### 4. 함수 오버로드 규칙
+
+| 규칙 | 설명 |
+|------|------|
+| **오버로드 시그니처** | 외부에 노출되는 타입 (구현 없음) |
+| **구현 시그니처** | 실제 구현 (외부에 노출 안 됨) |
+| **순서** | 구체적인 시그니처를 위에, 넓은 시그니처를 아래 |
+| **구현 타입** | 모든 오버로드를 포함할 수 있는 타입 |
+
+### 5. this 타입
+
+| 함수 종류 | this 바인딩 | 사용 시기 |
+|-----------|-------------|-----------|
+| **일반 함수** | 동적 바인딩 (호출 시 결정) | 메서드, 생성자 |
+| **화살표 함수** | 렉시컬 바인딩 (선언 위치) | 콜백, 클래스 필드 |
+| **this 명시** | `this: Type` 매개변수 | this 타입 보장 필요 시 |
+
+### 6. 제네릭 함수
+
+| 개념 | 문법 | 설명 |
+|------|------|------|
+| **타입 매개변수** | `<T>` | 타입을 변수처럼 사용 |
+| **타입 추론** | 자동 추론 | 호출 시 타입 자동 결정 |
+| **제약 조건** | `<T extends Type>` | 타입 범위 제한 |
+| **여러 매개변수** | `<T, U>` | 여러 타입 동시 사용 |
+| **keyof** | `<K extends keyof T>` | 객체 키 타입으로 제한 |
+
+### 7. async/await 타입
+
+| 항목 | 타입 | 설명 |
+|------|------|------|
+| **async 함수** | `Promise<T>` | 항상 Promise 반환 |
+| **await 결과** | `T` | Promise가 언래핑됨 |
+| **에러 타입** | `unknown` | catch 블록의 error |
+
+## 함수 타입 작성 가이드
+
+### 매개변수 타입 지정 (필수)
+
 ```typescript
-type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
-
-async function request<T>(
-  method: HttpMethod,
-  url: string,
-  data?: any
-): Promise<T> {
-  const response = await fetch(url, {
-    method,
-    body: data ? JSON.stringify(data) : undefined,
-  });
-  return response.json();
-}
+✅ function greet(name: string) { }
+❌ function greet(name) { }  // any 추론
 ```
 
-**예제 2: 파이프라인**
+### 반환 타입 명시 (권장: 공개 API)
+
 ```typescript
-function pipe<T>(...functions: Array<(arg: T) => T>) {
-  return (value: T) => functions.reduce((acc, fn) => fn(acc), value);
-}
+✅ export function calculate(x: number): number { }
+✅ function helper(x: number) { return x * 2; }  // 내부 함수는 추론 허용
 ```
 
-**예제 3: 디바운스/쓰로틀**
-```typescript
-function debounce<T extends (...args: any[]) => any>(
-  func: T,
-  delay: number
-): (...args: Parameters<T>) => void {
-  let timeoutId: NodeJS.Timeout;
+### 선택적 매개변수 순서
 
-  return (...args: Parameters<T>) => {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => func(...args), delay);
-  };
-}
+```typescript
+❌ function wrong(a?: string, b: number) { }
+✅ function correct(b: number, a?: string) { }
 ```
 
-**학습 포인트:**
-- 타입 안전한 API 클라이언트
-- 함수 합성 (파이프/컴포즈)
-- 디바운스/쓰로틀 구현
-- 고차 함수 패턴
+### 함수 오버로드 사용 판단
+
+```typescript
+// 오버로드 필요: 입력에 따라 반환 타입이 다름
+✅ function parse(x: string): string[];
+✅ function parse(x: number): number[];
+
+// 유니온으로 충분: 반환 타입이 동일
+✅ function print(value: string | number): void { }
+```
+
+### 제네릭 vs any
+
+```typescript
+✅ function first<T>(arr: T[]): T | undefined { }  // 타입 안전
+❌ function first(arr: any[]): any { }  // 타입 안전성 상실
+```
 
 ## 실습 가이드
 
-### 1. 예제 파일 실행
-
 ```bash
-# 기본 함수 타입
+# 순서대로 학습
 npx ts-node 02-functions-types/01-function-basics.ts
-
-# 선택적/기본/나머지 매개변수
 npx ts-node 02-functions-types/02-optional-default-rest.ts
-
-# 함수 오버로드
 npx ts-node 02-functions-types/03-function-overloads.ts
+npx ts-node 02-functions-types/04-function-types.ts
+npx ts-node 02-functions-types/05-arrow-functions.ts
+npx ts-node 02-functions-types/06-callback-functions.ts
+npx ts-node 02-functions-types/07-generic-functions.ts
+npx ts-node 02-functions-types/08-async-functions.ts
+npx ts-node 02-functions-types/09-practical-examples.ts
 
-# ... 순서대로
-```
-
-### 2. 타입 체크
-
-```bash
-# 타입 체크만
+# 타입 체크
 npx tsc --noEmit 02-functions-types/*.ts
 ```
 
-## 핵심 정리
-
-### 함수 타입 기본
-
-```typescript
-// 매개변수와 반환 타입 명시
-function add(a: number, b: number): number {
-  return a + b;
-}
-
-// 함수 타입 별칭
-type MathOp = (a: number, b: number) => number;
-const multiply: MathOp = (a, b) => a * b;
-```
-
-### 매개변수 패턴
-
-```typescript
-// 선택적 매개변수
-function f1(a: string, b?: number) { }
-
-// 기본 매개변수
-function f2(a: string, b = 42) { }
-
-// 나머지 매개변수
-function f3(...nums: number[]) { }
-```
-
-### 함수 오버로드
-
-```typescript
-function parse(x: string): string[];
-function parse(x: number): number[];
-function parse(x: string | number): string[] | number[] {
-  // 구현
-}
-```
-
-### 제네릭 함수
-
-```typescript
-function identity<T>(value: T): T {
-  return value;
-}
-
-function getProperty<T, K extends keyof T>(obj: T, key: K) {
-  return obj[key];
-}
-```
-
-### async/await
-
-```typescript
-async function fetchData(): Promise<Data> {
-  const response = await fetch('/api/data');
-  return response.json();
-}
-```
-
-## Best Practices
-
-1. **매개변수 타입 필수 지정**
-   ```typescript
-   // ✅ 좋음
-   function greet(name: string): string { }
-
-   // ❌ 나쁨
-   function greet(name): string { }  // any 추론
-   ```
-
-2. **반환 타입 명시 (공개 API)**
-   ```typescript
-   // ✅ 공개 함수는 반환 타입 명시
-   export function calculate(x: number): number { }
-
-   // ✅ 내부 함수는 추론 허용
-   function helper(x: number) { return x * 2; }
-   ```
-
-3. **함수 오버로드는 꼭 필요할 때만**
-   ```typescript
-   // ✅ 오버로드가 필요한 경우
-   function format(date: Date): string;
-   function format(timestamp: number): string;
-
-   // ✅ 유니온으로 충분한 경우
-   function print(value: string | number): void { }
-   ```
-
-4. **제네릭으로 재사용성**
-   ```typescript
-   // ✅ 제네릭 사용
-   function first<T>(arr: T[]): T | undefined {
-     return arr[0];
-   }
-
-   // ❌ any 사용
-   function first(arr: any[]): any {
-     return arr[0];
-   }
-   ```
-
-5. **콜백은 타입 별칭**
-   ```typescript
-   // ✅ 타입 별칭으로 재사용
-   type Callback<T> = (value: T) => void;
-
-   function process(callback: Callback<string>) { }
-   ```
-
 ## 자주 하는 실수
 
-### 1. 선택적 매개변수 순서
+### 1. 선택적 매개변수 위치
+❌ 선택적 매개변수가 필수 매개변수보다 앞에
+✅ 필수 → 선택적 → 기본값 → 나머지 순서
 
-```typescript
-// ❌ 에러: 선택적 매개변수는 뒤에
-function wrong(a?: string, b: number) { }
+### 2. 오버로드 시그니처 순서
+❌ 넓은 타입이 위에 있으면 구체적 타입이 무시됨
+✅ 구체적인 타입부터 나열
 
-// ✅ 올바름
-function correct(b: number, a?: string) { }
-```
+### 3. 화살표 함수의 this
+❌ 객체 메서드를 화살표 함수로 정의 → this가 상위 컨텍스트
+✅ 일반 함수 메서드로 정의
 
-### 2. 오버로드 순서
+### 4. async 함수 반환 타입
+❌ `async function f(): User`
+✅ `async function f(): Promise<User>`
 
-```typescript
-// ❌ 나쁨: 넓은 타입이 위에
-function parse(x: string | number): any;
-function parse(x: string): string[];
+### 5. 제네릭 제약 없이 사용
+❌ `function f<T>(obj: T) { return obj.length; }`  // length 없을 수 있음
+✅ `function f<T extends { length: number }>(obj: T) { return obj.length; }`
 
-// ✅ 좋음: 구체적인 타입이 위에
-function parse(x: string): string[];
-function parse(x: number): number[];
-function parse(x: string | number): any;
-```
+## 성능 및 최적화
 
-### 3. this 타입
+### 함수 오버로드 vs 유니온
+- **오버로드**: 타입이 복잡하거나 반환 타입이 입력에 의존
+- **유니온**: 간단한 경우, 컴파일 시간 단축
 
-```typescript
-// ❌ 화살표 함수에서 this 사용
-const obj = {
-  name: 'John',
-  greet: () => {
-    console.log(this.name);  // undefined!
-  }
-};
+### 제네릭 사용 시기
+- 타입이 함수 내에서 일관되게 사용될 때
+- 타입 안전성과 재사용성이 모두 필요할 때
 
-// ✅ 일반 함수 사용
-const obj = {
-  name: 'John',
-  greet() {
-    console.log(this.name);  // 'John'
-  }
-};
-```
+### this 바인딩 성능
+- 화살표 함수는 렉시컬 바인딩 → 약간 더 빠름
+- 일반 함수는 호출 시마다 this 결정 → 유연함
 
 ## 다음 단계
 
 02-functions-types를 완료했다면:
-- **[03-classes-interfaces](../03-classes-interfaces/)** - 클래스와 인터페이스 학습
+- **[03-classes-interfaces](../03-classes-interfaces/)** - 클래스와 인터페이스
+- **[05-generics](../05-generics/)** - 제네릭 심화 학습
 
 ## 참고 자료
 
 - [TypeScript Handbook - Functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
 - [TypeScript Deep Dive - Functions](https://basarat.gitbook.io/typescript/type-system/functions)
+- [TypeScript - Function Overloads](https://www.typescriptlang.org/docs/handbook/2/functions.html#function-overloads)
