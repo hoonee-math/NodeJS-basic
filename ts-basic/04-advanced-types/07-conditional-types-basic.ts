@@ -1,7 +1,17 @@
 /**
  * 07-conditional-types-basic.ts
  * 조건부 타입 (Conditional Types) 기초
- * 고급 내용은 05-generics에서 다룹니다.
+ *
+ * 타입을 조건에 따라 다르게 정의하고 싶을 때 조건부 타입(T extends U ? X : Y)을 사용합니다.
+ * 이 파일에서는 
+ * 조건부 타입 기본 문법, 
+ * extends 키워드의 의미("확장하다", "할당 가능하다"), 
+ * 타입 분배(Distributive) 동작 방식, 
+ * infer 키워드로 타입 추론하기(함수 반환 타입, 배열 요소 타입), 
+ * 내장 조건부 타입(Exclude, Extract, NonNullable) 이해하기, 
+ * 그리고 Promise 언래핑, 
+ * 함수 매개변수 추출 같은 실무 패턴을 다룹니다.
+ * 고급 내용(재귀 조건부 타입 등)은 05-generics에서 다룹니다.
  */
 
 // 1. 기본 조건부 타입 (T extends U ? X : Y)

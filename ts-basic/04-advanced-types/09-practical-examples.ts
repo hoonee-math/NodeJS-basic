@@ -1,6 +1,16 @@
 /**
  * 09-practical-examples.ts
  * 실전 종합 패턴 - 고급 타입 활용
+ *
+ * 앞에서 배운 유니온, 인터섹션, 리터럴, 판별 유니온, 조건부 타입, 매핑 타입을 실무에서 어떻게 조합해 사용하는지 배웁니다.
+ * 이 파일에서는 
+ * API 응답 타입 설계(제네릭 + 판별 유니온), 
+ * 비동기 상태 관리(idle/loading/success/error), 
+ * Redux Action 타입 정의, 폼 검증 결과 타입(ValidationResult), 
+ * 라우팅 경로와 파라미터 타입 매칭, 
+ * 이벤트 핸들러 타입(판별 유니온), 
+ * 중첩된 설정 객체 타입과 환경별 오버라이드(Partial), 
+ * 그리고 Todo 앱 CRUD 타입 시스템(Pick, Omit, Partial 조합) 구축을 다룹니다.
  */
 
 // 1. API 응답 타입 설계 (Success/Error)

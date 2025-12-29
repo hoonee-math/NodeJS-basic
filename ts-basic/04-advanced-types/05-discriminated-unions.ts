@@ -1,6 +1,16 @@
 /**
  * 05-discriminated-unions.ts
  * 판별 유니온 (Discriminated Unions / Tagged Unions)
+ *
+ * 여러 상태를 하나의 타입으로 표현하되 각 상태를 명확히 구분하고 싶을 때 판별 유니온을 사용합니다.
+ * 공통 프로퍼티(kind, type, status)로 상태를 구분하면 switch/case에서 TypeScript가 자동으로 타입을 좁혀줍니다.
+ * 이 파일에서는 
+ * 판별 유니온 기본 패턴, 
+ * loading/success/error 상태 머신, 
+ * Redux Action 타입 정의, 
+ * API 응답 타입 설계, 
+ * never 타입으로 모든 케이스 처리 강제하기(Exhaustiveness Checking), 
+ * 그리고 폼 검증/네트워크 요청 같은 실무 상태 관리 패턴을 다룹니다.
  */
 
 // 1. 기본 판별 유니온 (kind 프로퍼티)

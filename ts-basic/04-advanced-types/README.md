@@ -13,19 +13,19 @@ TypeScript의 진짜 강력함은 **타입을 조합하고 변환하는 능력**
 ## 목차
 
 ### 기본 타입 조합
-- [01-union-types.ts](#01-union-typests) - 유니온 타입 (OR)
-- [02-intersection-types.ts](#02-intersection-typests) - 인터섹션 타입 (AND)
-- [03-literal-types.ts](#03-literal-typests) - 리터럴 타입 (정확한 값)
+- [01-union-types.ts](#01-union-typests) - 유니온 타입 (OR), 타입 좁히기
+- [02-intersection-types.ts](#02-intersection-typests) - 인터섹션 타입 (AND), 믹스인 패턴
+- [03-literal-types.ts](#03-literal-typests) - 리터럴 타입 (정확한 값), Template Literal, const assertions
 
 ### 타입 좁히기 (Type Narrowing)
-- [04-type-guards.ts](#04-type-guardsts) - 타입 가드 함수
-- [05-discriminated-unions.ts](#05-discriminated-unionsts) - 판별 유니온
-- [06-type-narrowing.ts](#06-type-narrowingts) - 타입 좁히기 전략
+- [04-type-guards.ts](#04-type-guardsts) - 타입 가드 함수, typeof, instanceof, in, 사용자 정의 타입 가드
+- [05-discriminated-unions.ts](#05-discriminated-unionsts) - 판별 유니온, 상태 머신, Redux 패턴
+- [06-type-narrowing.ts](#06-type-narrowingts) - 타입 좁히기 전략, 제어 흐름 분석
 
 ### 고급 타입 변환
-- [07-conditional-types-basic.ts](#07-conditional-types-basicts) - 조건부 타입 기초
-- [08-mapped-types-basic.ts](#08-mapped-types-basicts) - 매핑 타입 기초
-- [09-practical-examples.ts](#09-practical-examplests) - 실전 종합
+- [07-conditional-types-basic.ts](#07-conditional-types-basicts) - 조건부 타입, infer, Exclude/Extract
+- [08-mapped-types-basic.ts](#08-mapped-types-basicts) - 매핑 타입, 프로퍼티 수정자, Partial/Pick/Omit
+- [09-practical-examples.ts](#09-practical-examplests) - 실전 종합 (API, 상태 관리, Redux, 폼 검증, 라우팅)
 
 ## 예제 파일 개요
 

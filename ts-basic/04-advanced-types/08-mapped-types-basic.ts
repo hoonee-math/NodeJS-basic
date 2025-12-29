@@ -1,7 +1,17 @@
 /**
  * 08-mapped-types-basic.ts
  * 매핑 타입 (Mapped Types) 기초
- * 고급 내용은 06-utility-types에서 다룹니다.
+ *
+ * 기존 타입의 모든 프로퍼티를 순회하면서 새로운 타입으로 변환하고 싶을 때 매핑 타입({ [K in keyof T]: ... })을 사용합니다.
+ * 이 파일에서는 
+ * keyof로 모든 키 추출하기, 
+ * in 연산자로 타입 순회하기, 
+ * readonly/optional(?) 수정자 추가 및 제거(-readonly, -?), 
+ * 모든 프로퍼티를 다른 타입으로 변환하기, 
+ * 템플릿 리터럴과 as 키워드로 키 이름 변경하기, 
+ * 내장 매핑 타입(Partial, Required, Readonly, Pick, Omit) 이해하기, 
+ * 그리고 얕은(Shallow) 변환과 깊은(Deep) 변환의 차이를 다룹니다.
+ * 고급 내용(재귀 매핑 타입 등)은 06-utility-types에서 다룹니다.
  */
 
 // 1. 기본 매핑 타입 ({ [K in keyof T]: ... })

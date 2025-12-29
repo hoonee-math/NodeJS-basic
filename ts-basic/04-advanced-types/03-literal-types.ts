@@ -1,6 +1,14 @@
 /**
  * 03-literal-types.ts
  * 리터럴 타입 (Literal Types) - 정확한 값 지정
+ *
+ * 변수가 아무 문자열이나 받는 게 아니라 'pending' | 'success' | 'error' 같은 특정 값만 받아야 할 때 리터럴 타입을 사용합니다.
+ * 이 파일에서는 
+ * String/Number/Boolean Literal 기본 사용법, 
+ * Template Literal Types로 패턴 문자열 만들기, 
+ * const assertions(as const)로 타입 정확하게 고정하기, 
+ * enum 대신 리터럴 유니온 쓰는 이유(런타임 코드 없어서 번들 크기 감소), 
+ * 그리고 HTTP 메서드/상태 코드/라우팅 경로 등 실무 활용법을 다룹니다.
  */
 
 // 1. String Literal Types

@@ -1,6 +1,14 @@
 /**
  * 02-intersection-types.ts
  * 인터섹션 타입 (Intersection Types) - AND 관계
+ *
+ * 여러 타입의 기능을 하나로 합치고 싶을 때 인터섹션 타입(A & B)을 사용합니다.
+ * 이 파일에서는 
+ * 기본 인터섹션으로 타입 합치기, 
+ * 믹스인 패턴으로 여러 기능 조합하기, 
+ * 제네릭과 함께 사용해 동적으로 타입 확장하기, 
+ * 같은 프로퍼티 이름이 충돌할 때 never 타입이 되는 문제, 
+ * 그리고 실무에서 자주 쓰는 Timestamped(생성일/수정일), Deletable(소프트 삭제), Metadata(메타데이터) 패턴을 다룹니다.
  */
 
 // 1. 기본 인터섹션 타입 (A & B)
@@ -220,17 +228,17 @@ type UserUnion = Admin | RegularUser;
 // Intersection: Admin이면서 RegularUser (둘 다 만족, 실제로는 불가능한 타입)
 type UserIntersection = Admin & RegularUser; // role이 'admin'이면서 'user'일 수 없음
 
-const adminMember: UserUnion = { // 변수명 변경: admin -> adminMember
+const admin: UserUnion = {
   role: 'admin',
   permissions: ['read', 'write', 'delete'],
 };
 
-const regularUser: UserUnion = { // 변수명 변경: user -> regularUser
+const regularUser: UserUnion = {
   role: 'user',
   level: 5,
 };
 
-console.log('Union - Admin:', adminMember);
+console.log('Union - Admin:', admin);
 console.log('Union - User:', regularUser);
 
 /**

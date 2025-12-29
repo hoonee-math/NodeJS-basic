@@ -1,6 +1,17 @@
 /**
  * 06-type-narrowing.ts
  * 타입 좁히기 (Type Narrowing) 종합 전략
+ *
+ * 타입 가드에서 배운 기법들을 종합하고, TypeScript의 제어 흐름 분석(Control Flow Analysis)이 어떻게 타입을 자동으로 좁혀주는지 이해합니다.
+ * 이 파일에서는 
+ * typeof/instanceof/in/등호(===) 좁히기, 
+ * Truthiness 체크로 falsy 값 걸러내기, 
+ * 옵셔널 체이닝(?.)으로 안전하게 접근하기, 
+ * never 타입으로 완전성 검사하기, 
+ * 제어 흐름 분석으로 return/break 후 타입 자동 좁히기, 
+ * Array.isArray로 배열 구분하기, 
+ * 타입 단언(as) 대신 타입 좁히기를 써야 하는 이유, 
+ * 그리고 복잡한 유니온 타입을 안전하게 다루는 실무 패턴을 다룹니다.
  */
 
 // 1. typeof 좁히기
