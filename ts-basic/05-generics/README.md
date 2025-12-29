@@ -13,19 +13,19 @@
 ## 목차
 
 ### 제네릭 기초
-- [01-generic-functions.ts](#01-generic-functionsts) - 제네릭 함수
-- [02-generic-constraints.ts](#02-generic-constraintsts) - 제약 조건 (extends)
-- [03-generic-classes.ts](#03-generic-classests) - 제네릭 클래스
-- [04-generic-interfaces.ts](#04-generic-interfacests) - 제네릭 인터페이스
+- [01-generic-functions.ts](#01-generic-functionsts) - 제네릭 함수 기초, any vs 제네릭, 타입 추론
+- [02-generic-constraints.ts](#02-generic-constraintsts) - 제약 조건 (extends), keyof, 생성자 타입
+- [03-generic-classes.ts](#03-generic-classests) - 제네릭 클래스, Stack, Queue, LinkedList
+- [04-generic-interfaces.ts](#04-generic-interfacests) - 제네릭 인터페이스, Repository, Observable 패턴
 
 ### 고급 제네릭
-- [05-multiple-type-parameters.ts](#05-multiple-type-parametersts) - 다중 타입 매개변수
-- [06-conditional-types.ts](#06-conditional-typests) - 조건부 타입 고급
-- [07-infer-keyword.ts](#07-infer-keywordts) - infer로 타입 추출
+- [05-multiple-type-parameters.ts](#05-multiple-type-parametersts) - 다중 타입 매개변수, 다중 제네릭, Either 패턴, 함수 합성
+- [06-conditional-types.ts](#06-conditional-typests) - 조건부 타입 고급, 분배 법칙, 재귀, 내장 유틸리티
+- [07-infer-keyword.ts](#07-infer-keywordts) - infer로 타입 추출, ReturnType, Parameters, Awaited
 
 ### 실전 응용
-- [08-utility-type-creation.ts](#08-utility-type-creationts) - 유틸리티 타입 만들기
-- [09-practical-examples.ts](#09-practical-examplests) - 실전 패턴
+- [08-utility-type-creation.ts](#08-utility-type-creationts) - 커스텀 유틸리티 타입, DeepReadonly, PickByType
+- [09-practical-examples.ts](#09-practical-examplests) - 실전 패턴 (Repository, Service, HTTP Client, Cache 등)
 
 ## 예제 파일 개요
 
