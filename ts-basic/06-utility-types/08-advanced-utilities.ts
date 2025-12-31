@@ -372,7 +372,11 @@ function createShape<T extends ShapeConstructor>(
   ctor: T,
   ...args: ConstructorParameters<T>
 ): InstanceType<T> {
-  return new ctor(...args);
+  // 타입 단언이 필요한 이유:
+  // TypeScript는 `new ctor(...args)`의 반환 타입을 Shape로 추론하지만,
+  // 실제로는 T의 인스턴스(Circle 또는 Rectangle)를 반환함.
+  // 팩토리 패턴에서 제네릭 생성자를 다룰 때 흔히 사용하는 안전한 패턴.
+  return new ctor(...args) as InstanceType<T>;
 }
 
 const circle = createShape(Circle, 'circle1', 5);
