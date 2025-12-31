@@ -46,8 +46,11 @@ class InMemoryUserRepository implements Repository<User> {
     const index = this.users.findIndex((u) => u.id === id);
     if (index === -1) return null;
 
-    this.users[index] = { ...this.users[index], ...userData };
-    return this.users[index];
+    // Partial<User>와 User를 merge하면 타입이 Partial<User>가 되므로
+    // 타입 단언 필요. 실무에서도 update 로직에서 흔히 사용하는 패턴
+    this.users[index] = { ...this.users[index]!, ...userData } as User;
+    // index 체크를 했으므로 users[index]는 반드시 존재
+    return this.users[index]!;
   }
 
   async delete(id: string): Promise<boolean> {

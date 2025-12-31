@@ -77,7 +77,10 @@ type FilterCallback<T> = (value: T, index: number, array: T[]) => boolean;
 function customMap<T, U>(array: T[], callback: MapCallback<T, U>): U[] {
   const result: U[] = [];
   for (let i = 0; i < array.length; i++) {
-    result.push(callback(array[i], i, array));
+    // noUncheckedIndexedAccess로 인해 array[i]는 T | undefined 타입
+    // 하지만 loop 범위가 array.length로 제한되어 있으므로 항상 값이 존재
+    // 실무에서도 이런 경우 non-null assertion 사용
+    result.push(callback(array[i]!, i, array));
   }
   return result;
 }
@@ -166,12 +169,14 @@ function chain<T>(
     currentValue = newValue;
     index++;
     if (index < callbacks.length) {
-      callbacks[index](currentValue, next);
+      // index < callbacks.length 조건으로 범위 확인했으므로 안전
+      callbacks[index]!(currentValue, next);
     }
   };
 
   if (callbacks.length > 0) {
-    callbacks[0](currentValue, next);
+    // callbacks.length > 0이므로 callbacks[0]은 반드시 존재
+    callbacks[0]!(currentValue, next);
   }
 }
 
@@ -238,7 +243,8 @@ type ForEachCallback<T> = (item: T, index: number) => void;
 
 function forEach<T>(array: T[], callback: ForEachCallback<T>): void {
   for (let i = 0; i < array.length; i++) {
-    callback(array[i], i);
+    // 루프 범위가 array.length 내부이므로 array[i]는 항상 존재
+    callback(array[i]!, i);
   }
 }
 
@@ -274,7 +280,8 @@ function runMiddleware<T>(
   const next = () => {
     if (index < middlewares.length) {
       const middleware = middlewares[index++];
-      middleware(value, next);
+      // index < middlewares.length 조건 확인 후 접근하므로 안전
+      middleware!(value, next);
     }
   };
 

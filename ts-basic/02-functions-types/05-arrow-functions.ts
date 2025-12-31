@@ -142,7 +142,9 @@ const arrowGet = boundArrow.getValue;
 console.log('Arrow (call ignored):', arrowGet.call({ value: 100 }));
 
 // 8. 화살표 함수와 arguments
-function regularWithArgs() {
+// arguments 객체를 사용하기 위해 rest parameter 대신 명시적으로 ...args 사용
+// 실무에서는 rest parameter를 권장하지만, arguments 객체 동작을 보여주기 위한 예제
+function regularWithArgs(..._args: number[]) {
   console.log('Regular arguments:', arguments);
 
   const arrow = () => {

@@ -226,11 +226,14 @@ interface Logger {
   log(message: string): void;
 }
 
+// 인터페이스 확장 시 메서드 시그니처는 호환 가능해야 함
+// AdvancedLogger는 오버로딩을 사용하여 Logger의 시그니처도 포함
 interface AdvancedLogger extends Logger {
-  log(level: 'info' | 'warn' | 'error', message: string): void;
+  log(message: string): void; // Logger의 시그니처 유지
+  log(level: 'info' | 'warn' | 'error', message: string): void; // 추가 오버로드
 }
 
-// 구현에서는 두 시그니처 모두 지원해야 함
+// 구현에서는 모든 오버로드를 지원해야 함
 const logger: AdvancedLogger = {
   log(levelOrMessage: string | 'info' | 'warn' | 'error', message?: string): void {
     if (message) {

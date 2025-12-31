@@ -166,7 +166,9 @@ class Result<T, E = Error> {
   }
 
   static err<E = Error>(error: E): Result<never, E> {
-    return new Result(false, undefined, error);
+    // never 타입을 명시적으로 지정하기 위해 타입 단언 사용
+    // 에러 결과에는 값이 없으므로 never가 적절
+    return new Result(false, undefined, error) as Result<never, E>;
   }
 
   isOk(): this is Result<T, never> {

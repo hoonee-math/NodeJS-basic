@@ -178,6 +178,8 @@ console.log('Dog:', dog.makeSound());
 console.log('Cat:', cat.makeSound());
 
 // 7. 빌더 패턴
+// private 생성자를 사용하려면 Builder를 내부 클래스로 만들거나
+// 팩토리 메서드를 통해 접근해야 함
 class User {
   private constructor(
     public name: string,
@@ -188,6 +190,11 @@ class User {
 
   static builder() {
     return new UserBuilder();
+  }
+
+  // Builder에서 접근 가능하도록 내부 팩토리 메서드 제공
+  static create(name: string, email: string, age?: number, role?: string): User {
+    return new User(name, email, age, role);
   }
 }
 
@@ -218,7 +225,8 @@ class UserBuilder {
   }
 
   build(): User {
-    return new User(this.name, this.email, this.age, this.role);
+    // private 생성자 대신 정적 팩토리 메서드 사용
+    return User.create(this.name, this.email, this.age, this.role);
   }
 }
 

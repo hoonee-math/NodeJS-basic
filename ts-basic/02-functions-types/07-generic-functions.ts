@@ -198,7 +198,10 @@ function processValue<T extends string | number>(value: T): void {
   if (isString(value)) {
     console.log(`String: ${value.toUpperCase()}`);
   } else {
-    console.log(`Number: ${value.toFixed(2)}`);
+    // 제네릭 타입 T가 string | number 유니온이므로 타입 가드 후에도
+    // TypeScript는 자동으로 number로 좁히지 못함
+    // 실무에서는 typeof로 명시적 체크하거나 타입 단언 사용
+    console.log(`Number: ${(value as number).toFixed(2)}`);
   }
 }
 
@@ -258,7 +261,9 @@ function toArray<T>(...items: T[]): T[] {
 console.log('\n=== 제네릭 타입 추론 ===');
 const numArray = toArray(1, 2, 3); // number[]
 const strArray = toArray('a', 'b', 'c'); // string[]
-const mixedArray = toArray(1, 'a', true); // (string | number | boolean)[]
+// 혼합 타입 배열을 만들려면 명시적으로 유니온 타입 지정 필요
+// TypeScript는 첫 번째 인자로 타입을 추론하므로 자동으로 유니온이 되지 않음
+const mixedArray = toArray<string | number | boolean>(1, 'a', true);
 
 console.log('Numbers:', numArray);
 console.log('Strings:', strArray);

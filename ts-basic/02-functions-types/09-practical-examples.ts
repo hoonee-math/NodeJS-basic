@@ -367,15 +367,14 @@ console.log(passwordValidator.validate('weak'));
 console.log(passwordValidator.validate('StrongPass123'));
 
 // 14. 캐시 데코레이터 패턴
-function cached<T extends (...args: any[]) => any>(
-  target: any,
-  propertyName: string,
-  descriptor: TypedPropertyDescriptor<T>
-): TypedPropertyDescriptor<T> {
-  const originalMethod = descriptor.value!;
-  const cache = new Map<string, ReturnType<T>>();
+// 참고: TypeScript 5.0+에서 데코레이터를 사용하려면 tsconfig에서
+// experimentalDecorators를 true로 설정해야 함
+// 여기서는 데코레이터 대신 고차 함수 패턴으로 구현
 
-  descriptor.value = function (this: any, ...args: Parameters<T>) {
+function withCache<T extends (...args: any[]) => any>(fn: T): T {
+  const cache = new Map<string, any>();
+
+  return function (this: any, ...args: any[]) {
     const key = JSON.stringify(args);
 
     if (cache.has(key)) {
@@ -383,24 +382,22 @@ function cached<T extends (...args: any[]) => any>(
       return cache.get(key)!;
     }
 
-    const result = originalMethod.apply(this, args);
+    const result = fn.apply(this, args);
     cache.set(key, result);
     return result;
   } as T;
-
-  return descriptor;
 }
 
 class Calculator {
-  @cached
-  fibonacci(n: number): number {
+  // 데코레이터 없이 캐시 적용
+  fibonacci = withCache((n: number): number => {
     console.log(`  Computing fibonacci(${n})`);
     if (n <= 1) return n;
     return this.fibonacci(n - 1) + this.fibonacci(n - 2);
-  }
+  });
 }
 
-console.log('\n=== 캐시 데코레이터 ===');
+console.log('\n=== 캐시 패턴 (고차 함수) ===');
 const calc = new Calculator();
 console.log('Result:', calc.fibonacci(10));
 

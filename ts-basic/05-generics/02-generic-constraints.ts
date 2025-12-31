@@ -95,7 +95,8 @@ console.log('\n=== 5. 배열 요소 제약 ===');
 function findMax<T extends number | string>(arr: T[]): T | undefined {
   if (arr.length === 0) return undefined;
 
-  let max = arr[0];
+  // arr.length > 0 체크를 했으므로 arr[0]은 항상 존재
+  let max = arr[0]!;
   for (const item of arr) {
     if (item > max) {
       max = item;

@@ -52,8 +52,10 @@ class InMemoryRepository<T extends Entity> implements Repository<T> {
     const index = this.items.findIndex((item) => item.id === id);
     if (index === -1) throw new Error('Not found');
 
-    this.items[index] = { ...this.items[index], ...updates };
-    return this.items[index];
+    // Partial을 merge하면 타입 불일치. 타입 단언 필요
+    this.items[index] = { ...this.items[index]!, ...updates } as T;
+    // index 체크를 했으므로 반드시 존재
+    return this.items[index]!;
   }
 
   async delete(id: T['id']): Promise<boolean> {
@@ -250,7 +252,9 @@ class FormValidator<T extends Record<string, unknown>> {
   }
 }
 
+// Record 제약을 만족하려면 인덱스 시그니처 필요
 interface SignupForm {
+  [key: string]: unknown;
   email: string;
   password: string;
   confirmPassword: string;
@@ -304,7 +308,9 @@ class TypedEventEmitter<Events extends EventMap> {
   }
 }
 
+// Record 제약을 만족하려면 인덱스 시그니처 필요
 interface AppEvents {
+  [eventName: string]: unknown;
   userLogin: { userId: number; timestamp: Date };
   userLogout: { userId: number };
   dataUpdate: { entity: string; id: number };

@@ -228,7 +228,10 @@ class TypedEventEmitter<Events extends EventMap> {
   }
 }
 
+// EventMap 제약을 만족하려면 인덱스 시그니처 필요
+// 실무에서는 Record나 type을 사용하는 것이 더 일반적
 interface MyEvents {
+  [eventName: string]: unknown; // 인덱스 시그니처 추가
   login: { username: string; timestamp: Date };
   logout: { userId: number };
   message: { text: string; from: string };
