@@ -93,15 +93,20 @@ NestJS는 다음 4가지 개념을 중심으로 동작한다.
 * DI 범위를 정의
 * 애플리케이션의 구조 자체
 
-### 예시
+### 예시 (현재 코드: `src/app.module.ts`)
 
 ```ts
-@Module({
-  controllers: [UsersController],
-  providers: [UsersService],
-  exports: [UsersService]
-})
-export class UsersModule {}
+import { Module } from '@nestjs/common';            // Nest 모듈 데코레이터 제공
+import { AppController } from './app.controller';   // 이 모듈에 등록할 컨트롤러
+import { AppService } from './app.service';         // 이 모듈에 등록할 프로바이더(서비스)
+
+@Module({ // 모듈 메타데이터 시작
+  imports: [],                  // 현재 모듈에서 사용하는 다른 모듈 없음
+  controllers: [AppController], // 이 모듈에서 요청을 처리할 컨트롤러
+  providers: [AppService],      // 이 모듈에서 주입할 수 있는 프로바이더
+}) 
+
+export class AppModule {} // 루트 모듈 선언
 ```
 
 👉 NestJS에서 **모듈은 설계도**에 가깝다.
@@ -115,9 +120,17 @@ export class UsersModule {}
 * NestJS DI 컨테이너에 의해 관리되는 객체
 * Service, Repository, Factory 등 모두 Provider
 
+### 예시 (현재 코드: `src/app.service.ts`)
+
 ```ts
-@Injectable()
-export class UsersService {}
+import { Injectable } from '@nestjs/common'; // DI 대상 표시용 데코레이터 제공
+
+@Injectable() // Nest DI 컨테이너가 관리하도록 표시
+export class AppService {   // 서비스(프로바이더) 클래스 선언
+  getHello(): string {      // 컨트롤러가 호출할 비즈니스 메서드
+    return 'Hello World!';  // 실제 응답 문자열
+  }
+}
 ```
 
 👉 `@Injectable()`이 붙은 순간 DI 대상이 된다.
@@ -132,14 +145,19 @@ export class UsersService {}
 * URL, HTTP Method 매핑
 * 비즈니스 로직을 직접 수행하지 않음
 
-```ts
-@Controller('users')
-export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+### 예시 (현재 코드: `src/app.controller.ts`)
 
-  @Get()
-  findAll() {
-    return this.usersService.findAll();
+```ts
+import { Controller, Get } from '@nestjs/common';   // 컨트롤러/라우팅 데코레이터 제공
+import { AppService } from './app.service';         // 비즈니스 로직을 가진 서비스
+
+@Controller() // 기본 경로('/')에 매핑되는 컨트롤러
+export class AppController { // 컨트롤러 클래스 선언
+  constructor(private readonly appService: AppService) {} // DI로 서비스 주입
+
+  @Get() // HTTP GET 요청 매핑
+  getHello(): string { // GET / 요청 핸들러
+    return this.appService.getHello(); // 서비스의 로직을 호출해 응답 반환
   }
 }
 ```
@@ -155,11 +173,15 @@ export class UsersController {
 * 실제 비즈니스 로직 담당
 * 여러 Controller에서 재사용 가능
 
+### 예시 (현재 코드: `src/app.service.ts`)
+
 ```ts
-@Injectable()
-export class UsersService {
-  findAll() {
-    return ['user1', 'user2'];
+import { Injectable } from '@nestjs/common'; // DI 대상 표시용 데코레이터 제공
+
+@Injectable()               // Nest DI 컨테이너가 관리하도록 표시
+export class AppService {   // 서비스(프로바이더) 클래스 선언
+  getHello(): string {      // 컨트롤러가 호출할 비즈니스 메서드
+    return 'Hello World!';  // 실제 응답 문자열
   }
 }
 ```
@@ -168,7 +190,46 @@ export class UsersService {
 
 ---
 
-## 9. 의존성 주입 (DI) 요약
+## 9. 앱 시작점 (부트스트랩)
+
+### 예시 (현재 코드: `src/main.ts`)
+
+```ts
+import { NestFactory } from '@nestjs/core'; // Nest 애플리케이션 생성 팩토리
+import { AppModule } from './app.module';   // 루트 모듈
+
+async function bootstrap() { // 애플리케이션 시작 함수
+  const app = await NestFactory.create(AppModule);  // AppModule 기반으로 앱 생성
+  await app.listen(process.env.PORT ?? 3000);       // 환경변수 PORT 또는 3000으로 서버 시작
+}
+bootstrap(); // 앱 시작 실행
+```
+
+?? `main.ts`는 **Nest 애플리케이션의 진입점**이다.
+
+---
+
+## 10. DTO (데이터 전송 객체) 개념
+
+### 역할
+
+* 요청/응답 데이터의 구조를 명확히 정의
+* 유효성 검사(Validation Pipe)와 함께 사용하면 안정성 향상
+
+### 예시 (현재 프로젝트에는 없음, 예시로만 소개)
+
+```ts
+export class CreateUserDto {    // 사용자 생성 요청 DTO
+  name: string;                 // 클라이언트가 보내는 이름 필드
+  email: string;                // 클라이언트가 보내는 이메일 필드
+}
+```
+
+?? 보통 `src/users/dto/` 같은 위치에 둔다.
+
+---
+
+## 11. 의존성 주입 (DI) 요약
 
 ### 핵심 개념
 
@@ -176,7 +237,7 @@ export class UsersService {
 * NestJS 컨테이너가 생성 & 관리
 
 ```ts
-constructor(private readonly usersService: UsersService) {}
+constructor(private readonly appService: AppService) {} // 컨테이너가 AppService를 주입
 ```
 
 ### 효과
@@ -187,7 +248,7 @@ constructor(private readonly usersService: UsersService) {}
 
 ---
 
-## 10. 한 문장으로 정리
+## 12. 한 문장으로 정리
 
 > NestJS는 **Module을 중심으로 Controller와 Service를 분리하고, 모든 객체를 DI 컨테이너가 관리하는 구조적 프레임워크**이다.
 
